@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to Esther's Birthday</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    input, button { padding: 10px; margin: 8px; width: 80%; max-width: 300px; }
+    canvas { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🎉 Welcome to Barrister Esther Otsabomhe's Birthday Party!</h1>
+  <p>Venue: Lagos Continental Hotel, 52a Kofo Abayomi St, Victoria Island, Lagos</p>
+  <p>Time: 12 Noon</p>
+
+  <h3>Fill in your details to receive your pass</h3>
+  <form id="guestForm">
+    <input type="text" id="name" placeholder="Full Name" required><br>
+    <input type="email" id="email" placeholder="Email Address" required><br>
+    <button type="submit">Generate My Invitation</button>
+  </form>
+
+  <div id="result" style="display:none;">
+    <p>✅ You’ve been registered!</p>
+    <p><strong>Your access code:</strong> <span id="guestCode"></span></p>
+    <canvas id="qrCanvas"></canvas>
+    <p>Show this code or QR at the venue for verification.</p>
+    <a href="verify.html">Go to verification page</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('guestForm');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const code = 'ESTHER-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+
+      const guestData = { name, email, code };
+      localStorage.setItem(code, JSON.stringify(guestData));
+
+      document.getElementById('guestCode').textContent = code;
+      QRCode.toCanvas(document.getElementById('qrCanvas'), code, function(error) {
+        if (error) console.error(error);
+      });
+
+      form.style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

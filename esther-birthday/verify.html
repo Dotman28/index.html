@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify Guest – Esther’s Birthday</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    input, button { padding: 10px; width: 80%; max-width: 300px; margin: 10px; }
+    .result { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🔍 Verify Invitation</h1>
+  <p>Enter your access code below (from your invitation QR)</p>
+
+  <input type="text" id="accessCode" placeholder="Enter your code">
+  <br>
+  <button onclick="verify()">Verify</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    function verify() {
+      const code = document.getElementById('accessCode').value.trim();
+      const guest = JSON.parse(localStorage.getItem(code));
+      const resultDiv = document.getElementById('result');
+
+      if (guest) {
+        resultDiv.textContent = `✅ Welcome ${guest.name}! You’re on the guest list.`;
+      } else {
+        resultDiv.textContent = `❌ Code not recognized. Please check your invitation.`;
+      }
+    }
+  </script>
+</body>
+</html>
